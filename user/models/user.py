@@ -28,12 +28,15 @@ class User(AbstractUser):
 
     objects = UserManager()
 
+    @property
     def is_admin(self) -> bool:
         return self.role == UserRole.ADMIN or self.is_superuser
 
+    @property
     def is_teacher(self) -> bool:
         return self.role == UserRole.TEACHER
 
+    @property
     def is_student(self) -> bool:
         return self.role == UserRole.STUDENT
 
@@ -50,5 +53,6 @@ class User(AbstractUser):
             self.is_active = True
             self.save()
 
+    @property
     def is_banned(self) -> bool:
-        return self.is_active
+        return not self.is_active
