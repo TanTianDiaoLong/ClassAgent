@@ -1,9 +1,9 @@
 from django.contrib import admin
 
-from .models import ClassRoom, Enrollment, Teaching
+from .models import Classroom, Enrollment, Teaching
 
 
-@admin.register(ClassRoom)
+@admin.register(Classroom)
 class ClassRoomAdmin(admin.ModelAdmin):
     list_display = ("serial", "subject", "term", "created_by", "created_at")
     search_fields = ("serial", "subject", "term")

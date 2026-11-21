@@ -1,26 +1,52 @@
 from django.conf import settings
 from django.db import models
 
+from ..managers import ClassroomManager
 
-class ClassRoom(models.Model):
+
+class Classroom(models.Model):
     """Teaching class. Subject and term are columns on this table."""
+    objects = ClassroomManager()
 
-    serial = models.CharField(
-        "serial",
+    serial = models.UUIDField(
+        primary_key=True, # 这是教学班主键
+        verbose_name="serial",
+        db_column="serial",
         max_length=32,
         unique=True,
+        editable=False, # 这个字段不得随意改动
         help_text="Class serial, like a student ID.",
     )
-    subject = models.CharField("subject", max_length=32)
-    term = models.CharField("term", max_length=32)
+
+    name = models.CharField(
+        "name",
+        db_column="name",
+        max_length=32,
+        unique=False,
+        help_text="class name",
+    )
+
+    subject = models.CharField("subject",
+                               max_length=64,
+                               unique=False,)
+
+    term = models.CharField("term",
+                            max_length=32,
+                            unique=False,)
+
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
+        db_column="created_by",
         on_delete=models.PROTECT,
         related_name="created_classrooms",
         verbose_name="created by",
     )
-    created_at = models.DateTimeField("created at", auto_now_add=True)
-    updated_at = models.DateTimeField("updated at", auto_now=True)
+    created_at = models.DateTimeField("created at",
+                                      db_column="created_at",
+                                      auto_now_add=True)
+    updated_at = models.DateTimeField("updated at",
+                                      db_column="updated_at",
+                                      auto_now=True)
 
     class Meta:
         verbose_name = "class room"

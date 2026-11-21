@@ -3,20 +3,23 @@ from django.db import models
 
 from user.models.enum import UserRole
 
-from .classroom import ClassRoom
+# from ..managers import EnrolmentManager
+from .classroom import Classroom
 
 
 class Enrollment(models.Model):
     """Student <-> class room. One row = one student in one class. Remove = delete row."""
 
+    # objects = EnrolmentManager()
+
     classroom = models.ForeignKey(
-        ClassRoom,
+        to=Classroom,
         on_delete=models.CASCADE,
         related_name="enrollments",
         verbose_name="class room",
     )
     student = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
+        to=settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name="enrollments",
         verbose_name="student",
