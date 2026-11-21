@@ -1,0 +1,182 @@
+/* 首页 + 仪表盘共用的样式。
+   配色沿用 login.css / logout.css 的深色系，保证三个页面看起来是一套的。 */
+
+:root {
+    --bg: #111315;
+    --panel: #1b1e21;
+    --line: rgba(248, 248, 245, .12);
+    --text: #f8f8f5;
+    --muted: rgba(248, 248, 245, .62);
+    --primary: #4aabea;
+    --accent: #f1c644;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Noto Sans SC", "Microsoft YaHei", Roboto, Arial, sans-serif;
+    line-height: 1.6;
+}
+
+a { color: inherit; text-decoration: none; }
+
+.page { min-height: 100vh; display: flex; flex-direction: column; }
+
+/* ---------- 顶部导航 ---------- */
+.topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem clamp(1rem, 4vw, 3rem);
+    border-bottom: 1px solid var(--line);
+}
+
+.brand { display: flex; align-items: center; gap: .75rem; }
+
+.brand__mark {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    background: var(--accent);
+    color: #17191b;
+    font-weight: 700;
+}
+
+.brand__text { display: flex; flex-direction: column; line-height: 1.25; }
+.brand__name { font-size: .9rem; letter-spacing: .14em; }
+.brand__sub { font-size: .72rem; color: var(--muted); }
+
+.topbar__nav { display: flex; align-items: center; gap: .75rem; }
+.who { font-size: .85rem; color: var(--muted); }
+.role {
+    margin-left: .5rem;
+    padding: .1rem .5rem;
+    border: 1px solid var(--line);
+    color: var(--primary);
+    font-size: .72rem;
+}
+
+/* ---------- 按钮 ---------- */
+.btn {
+    display: inline-block;
+    padding: .6rem 1.1rem;
+    background: var(--accent);
+    color: #17191b;
+    font-weight: 600;
+    font-size: .88rem;
+}
+.btn:hover { background: #ffd802; }
+.btn--ghost { background: transparent; border: 1px solid var(--line); color: var(--text); font-weight: 400; }
+.btn--ghost:hover { border-color: var(--primary); }
+.btn--big { padding: .85rem 1.6rem; font-size: 1rem; }
+
+/* ---------- 主体容器 ---------- */
+.wrap {
+    flex: 1;
+    width: min(1080px, 100% - 2rem);
+    margin: 0 auto;
+    padding: clamp(2rem, 5vw, 4rem) 0;
+}
+
+/* ---------- 标题区 ---------- */
+.hero { margin-bottom: 2.5rem; }
+.hero--guest { padding: 2rem 0 1rem; }
+.kicker {
+    margin: 0 0 .75rem;
+    color: var(--primary);
+    font-size: .75rem;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+}
+h1 {
+    margin: 0 0 1rem;
+    font-size: clamp(1.9rem, 4.5vw, 3rem);
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -.02em;
+}
+.lede { max-width: 44rem; margin: 0 0 1.5rem; color: var(--muted); font-size: 1rem; }
+
+/* ---------- 能力卡片 ---------- */
+.caps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+.cap { padding: 1.5rem; background: var(--panel); border: 1px solid var(--line); }
+.cap__no { color: var(--accent); font-size: .75rem; letter-spacing: .1em; }
+.cap h2 { margin: .5rem 0; font-size: 1.05rem; font-weight: 600; }
+.cap p { margin: 0; color: var(--muted); font-size: .88rem; }
+
+/* ---------- 统计卡片 ---------- */
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2rem; }
+.stat {
+    display: flex;
+    flex-direction: column;
+    padding: 1.25rem;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-top: 3px solid var(--primary);
+}
+.stat__label { color: var(--muted); font-size: .78rem; letter-spacing: .06em; }
+.stat__value { margin: .35rem 0; font-size: 1.9rem; font-weight: 600; line-height: 1.1; }
+.stat__hint { color: var(--muted); font-size: .75rem; }
+
+/* ---------- 面板与表格 ---------- */
+.panel { background: var(--panel); border: 1px solid var(--line); }
+.panel--gap { margin-top: 1.5rem; }
+.panel__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.1rem 1.25rem;
+    border-bottom: 1px solid var(--line);
+}
+.panel__head h2 { margin: 0; font-size: 1rem; font-weight: 600; }
+.panel__count { color: var(--muted); font-size: .78rem; }
+.table-scroll { overflow-x: auto; }
+
+table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+th, td { padding: .85rem 1.25rem; text-align: left; border-bottom: 1px solid var(--line); }
+th { color: var(--muted); font-size: .75rem; font-weight: 400; letter-spacing: .08em; }
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: rgba(74, 171, 234, .06); }
+.mono { font-family: SFMono-Regular, Menlo, Consolas, monospace; color: var(--primary); }
+.muted { color: var(--muted); }
+.empty { padding: 2.5rem 1.25rem; text-align: center; color: var(--muted); }
+
+/* ---------- 账户设置 ---------- */
+.settings {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem 1.5rem;
+    margin: 0;
+    padding: 1.25rem;
+}
+.settings div { display: flex; flex-direction: column; gap: .3rem; }
+.settings dt { color: var(--muted); font-size: .75rem; letter-spacing: .08em; }
+.settings dd { margin: 0; font-size: .95rem; word-break: break-all; }
+.settings__actions { display: flex; flex-wrap: wrap; gap: .75rem; padding: 0 1.25rem 1.25rem; }
+
+/* ---------- 页脚 ---------- */
+.footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem clamp(1rem, 4vw, 3rem);
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+    font-size: .75rem;
+}
+
+/* ---------- 窄屏 ---------- */
+@media (max-width: 760px) {
+    .caps, .stats { grid-template-columns: repeat(2, 1fr); }
+    .topbar { flex-wrap: wrap; }
+}
+@media (max-width: 480px) {
+    .caps, .stats { grid-template-columns: 1fr; }
+    .footer { flex-direction: column; }
+}

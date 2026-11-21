@@ -1,10 +1,59 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
+{# 这一行表示：布局用 base.html，下面只需要填 block 里的内容 #}
 
-</body>
-</html>
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+    {% if audience == 'guest' %}
+
+        {# ---------- 没登录：介绍页 ---------- #}
+        <section class="hero hero--guest">
+            <p class="kicker">Smart teaching platform</p>
+            <h1>课程、成员与班级事务<br>在这里汇合。</h1>
+            <p class="lede">
+                ClassAgent 以教学班为单位组织课程、教师与学生，为课程智能体提供统一的数据底座。
+            </p>
+            <a class="btn btn--big" href="{% url 'login' %}">进入工作台 →</a>
+        </section>
+
+        <section class="caps" aria-label="系统能力">
+            <article class="cap">
+                <span class="cap__no">01 / ADMIN</span>
+                <h2>管理员</h2>
+                <p>课程班配置、成员与角色管理、任课绑定与系统状态。</p>
+            </article>
+            <article class="cap">
+                <span class="cap__no">02 / TEACHER</span>
+                <h2>教师</h2>
+                <p>查看任教班级、班级人数与授课关系，管理教学内容。</p>
+            </article>
+            <article class="cap">
+                <span class="cap__no">03 / STUDENT</span>
+                <h2>学生</h2>
+                <p>查看已选教学班、授课教师与个人学习入口。</p>
+            </article>
+        </section>
+
+    {% else %}
+
+        {# ---------- 已登录：欢迎页 ---------- #}
+        <section class="hero">
+            <p class="kicker">{{ role_label }} · {% now "Y-m-d" %}</p>
+            <h1>{{ headline }}</h1>
+            <p class="lede">{{ lede }}</p>
+            <a class="btn btn--big" href="{% url 'core:dashboard' %}">进入工作台 →</a>
+        </section>
+
+        <section class="caps" aria-label="{{ role_label }}能力概览">
+            {# capabilities 是 [(编号, 标题, 描述), ...]，Django 模板支持直接解包 #}
+            {% for code, title, desc in capabilities %}
+                <article class="cap">
+                    <span class="cap__no">{{ code }}</span>
+                    <h2>{{ title }}</h2>
+                    <p>{{ desc }}</p>
+                </article>
+            {% endfor %}
+        </section>
+
+    {% endif %}
+{% endblock %}
