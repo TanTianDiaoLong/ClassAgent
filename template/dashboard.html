@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+    {# ---------- 1. 标题区 ---------- #}
+    <section class="hero">
+        <p class="kicker">{{ role_label }} workspace · {% now "Y-m-d" %}</p>
+        <h1>{{ headline }}</h1>
+        <p class="lede">{{ lede }}</p>
+    </section>
+
+    {# ---------- 2. 统计卡片 ---------- #}
+    <section class="stats" aria-label="概览数据">
+        {# cards 是 [{"label": ..., "value": ..., "hint": ...}, ...] #}
+        {% for card in cards %}
+            <article class="stat">
+                <span class="stat__label">{{ card.label }}</span>
+                <strong class="stat__value">{{ card.value }}</strong>
+                <span class="stat__hint">{{ card.hint }}</span>
+            </article>
+        {% endfor %}
+    </section>
+
+    {# ---------- 3. 教学班表格 ---------- #}
+    <section class="panel" aria-labelledby="classes-title">
+        <div class="panel__head">
+            <h2 id="classes-title">{{ table_title }}</h2>
+            <span class="panel__count">共 {{ classes|length }} 个</span>
+        </div>
+        <div class="table-scroll">
+            <table>
+                <thead>
+                    <tr>
+                        <th>编号</th>
+                        <th>科目</th>
+                        <th>学期</th>
+                        {% if show_counts %}<th>学生数</th>{% endif %}
+                        {% if show_teachers %}<th>授课教师</th>{% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for klass in classes %}
+                        <tr>
+                            <td class="mono">{{ klass.serial }}</td>
+                            <td>{{ klass.subject }}</td>
+                            <td>{{ klass.term }}</td>
+                            {% if show_counts %}
+                                <td>{{ klass.student_count }}</td>
+                            {% endif %}
+                            {% if show_teachers %}
+                                <td>
+                                    {# klass.teachings.all 是反向关联：从班级拿到它的所有任课记录 #}
+                                    {% for teaching in klass.teachings.all %}
+                                        {{ teaching.teacher.display_name }}{% if not forloop.last %}、{% endif %}
+                                    {% empty %}
+                                        <span class="muted">暂未安排</span>
+                                    {% endfor %}
+                                </td>
+                            {% endif %}
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td class="empty" colspan="{{ colspan }}">{{ empty_hint }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    {# ---------- 4. 账户与设置 ---------- #}
+    <section class="panel panel--gap" aria-labelledby="settings-title">
+        <div class="panel__head">
+            <h2 id="settings-title">账户与设置</h2>
+        </div>
+        <dl class="settings">
+            {# account_rows 是 [(标签, 值), ...] #}
+            {% for label, value in account_rows %}
+                <div>
+                    <dt>{{ label }}</dt>
+                    <dd>{{ value }}</dd>
+                </div>
+            {% endfor %}
+        </dl>
+        <div class="settings__actions">
+            {# 只有真正有后台权限的人才显示这个按钮，避免死链接 #}
+            {% if user.is_staff or user.is_superuser %}
+                <a class="btn btn--ghost" href="/admin/">后台管理 →</a>
+            {% endif %}
+            <a class="btn btn--ghost" href="{% url 'logout' %}">退出登录</a>
+        </div>
+    </section>
+{% endblock %}

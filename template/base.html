@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#111315">
+    <title>{% block title %}ClassAgent{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+</head>
+<body>
+<div class="page">
+    {# 顶部导航：所有页面共用，所以写在 base 里 #}
+    <header class="topbar">
+        <a class="brand" href="{% url 'core:home' %}" aria-label="ClassAgent 首页">
+            <span class="brand__mark" aria-hidden="true">CA</span>
+            <span class="brand__text">
+                <span class="brand__name">CLASSAGENT</span>
+                <span class="brand__sub">班级智能协作系统</span>
+            </span>
+        </a>
+        <nav class="topbar__nav">
+            {# user 是 Django 自动塞进模板的，不用在视图里传 #}
+            {% if user.is_authenticated %}
+                <span class="who">
+                    {{ user.display_name }}
+                    <span class="role">{{ user.get_role_display }}</span>
+                </span>
+                <a class="btn btn--ghost" href="{% url 'core:dashboard' %}">工作台</a>
+                <a class="btn btn--ghost" href="{% url 'logout' %}">登出</a>
+            {% else %}
+                <a class="btn" href="{% url 'login' %}">账号登录</a>
+            {% endif %}
+        </nav>
+    </header>
+
+    {# 子模板把自己的内容填到这里 #}
+    <main class="wrap">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <span>ClassAgent · 数据结构与算法基础课程项目</span>
+        <span>{% block footer_right %}数据源：本地 SQLite{% endblock %}</span>
+    </footer>
+</div>
+</body>
+</html>

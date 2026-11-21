@@ -108,6 +108,10 @@ AUTHENTICATION_BACKENDS = [
     "user.backends.UserNoOrEmailBackend"
 ]
 
+# 未登录用户访问 @login_required / LoginRequiredMixin 保护的页面时，
+# 会被跳到这里。可以写路径，也可以写 URL 名字（这里用名字，改名时不用跟着改）。
+LOGIN_URL = "login"
+
 # Internationalization
 # https://docs.djangoproject.com/en/6.1/topics/i18n/
 
