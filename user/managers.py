@@ -8,11 +8,13 @@ class UserManager(BaseUserManager):
     def create_user(self, user_id, email=None, password=None, **extra_fields):
         if not user_id:
             raise ValueError('User ID cannot be empty!')
-        if email:
-            email = self.normalize_email(email)
+
+        email = self.normalize_email(email) if email else ""
+        extra_fields.setdefault("username", user_id)
+
         user = self.model(user_id=user_id, email=email, **extra_fields)
         user.set_password(password)
-        user.save()
+        user.save(using=self._db)
         return user
 
     def create_superuser(self, user_id, email, password=None, **extra_fields):

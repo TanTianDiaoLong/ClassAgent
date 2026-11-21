@@ -40,8 +40,22 @@ INSTALLED_APPS = [
 
     "user",
     "core",
-    "classroom"
+    "classroom",
+
+    "rest_framework",
+    "api",
 ]
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "api.authentication.APIKeyAuthentication",
+    ],
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticated",
+    ],
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": 20,
+}
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
