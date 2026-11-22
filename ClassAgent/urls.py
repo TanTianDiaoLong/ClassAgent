@@ -20,15 +20,10 @@ from django.urls import include, path
 
 from user.views import LoginView, LogoutView
 urlpatterns = [
-    path('login/', view=LoginView.as_view(), name='login'),
-    path('logout/', view=LogoutView.as_view(), name='logout'),
-
+    #api
     path("api/v1/", include("api.urls")),
-
-    # 后台管理必须写在 include 之前：core 的路径是空字符串 ''，
-    # 如果它排在前面，/admin/ 会被 core 先接走然后 404。
+    #login
+    path("",include("user.urls")),
     path("admin/", admin.site.urls), # TODO: Will remove in future.
-
-    # 首页（/）和仪表盘（/dashboard/）交给 core 应用自己管
-    path('', include('core.urls')),
+    path("", include('core.urls')),
 ]
